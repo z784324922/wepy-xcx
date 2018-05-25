@@ -1,0 +1,145 @@
+<style lang="less">
+page{
+  background: #efeff4;
+}
+.mui-content{
+  border-top:1px solid #e3e3e5;
+  .title{
+    height: 180rpx;
+    background: #efeff4;
+    overflow: hidden;
+    .title-box{
+      margin: 15rpx auto; 
+      width: 95%;
+      height: 150rpx;
+      border-radius: 6rpx;
+      background: white; 
+      box-shadow: 0 3rpx 6rpx rgba(0,0,0,.3);
+      text-align: center;
+      view{
+        height: 50rpx;
+        line-height: 50rpx;
+      }
+    }
+  }
+  .slagcar-box{
+      overflow: hidden;
+      background: white;
+      border-bottom:1px solid #e3e3e5;  
+      .imgbox{
+        width: 140rpx;
+        height: 180rpx;
+        margin-left:20rpx; 
+        float: left;
+      }
+      .textbox{
+        width: 565rpx;
+        height: 100%;
+        padding-left: 25rpx;
+        margin-top:20rpx;
+        float: left;
+        .name{
+            line-height: 60rpx;
+            font-size: 32rpx;
+            font-weight: bold;
+            color: #1E90FF;
+        }
+      }
+  }
+}
+</style>
+<template>
+  <view class="mslagcareffciency">
+    <screening></screening>
+    <view class="total">
+      今日项目合计运输：<text class="tsbz">22</text>车
+    </view>
+    <view class="mui-content">
+      <view class="title">
+          <view class="title-box">
+            <view>
+              <image src="../assets/images/tx.png" style="width: 26rpx; height: 26rpx;margin-right: 10rpx " />
+              <text style="font-size:30rpx">老板：</text><text class="tsz">廖勇</text>
+            </view>
+            <view>
+              <text style="font-size:28rpx">今日累计运输：</text> <text class="tsz" style="color:red;font-weight:800">30</text><text style="font-size:28rpx">车</text>
+            </view>
+            <view>
+              <text style="font-size:28rpx">外场04线：</text> <text class="tsz" style="font-weight:800">30</text><text style="font-size:28rpx">车</text>
+            </view>
+          </view>
+      </view>
+      <view class="slagcar-box" @tap="gosearch" data-id="1">
+        <view class="imgbox">
+          <image src="../assets/images/zc.jpg" style="width: 100%;margin-top:20rpx; " mode="widthFix"/>
+        </view>
+        <view class="textbox">
+          <view class="size28">
+            <text class="tsbz" style="font-size:32rpx">廖勇 </text><text>渣车编号：</text><text class="tsbz" style="font-size:32rpx">Z01</text>
+            <text style="margin-left:20rpx">今日运输：<text class="tsbz">22</text>车</text>
+          </view>
+          <view class="size28">
+            <text>其中：</text>
+          </view>
+          <view class="size32">
+            <text style="margin-left:60rpx">外场04线：<text class="tsbz">22</text>车</text>
+          </view>
+        </view>
+      </view>
+
+
+      <view class="slagcar-box" @tap="gosearch" data-id="1">
+        <view class="imgbox">
+          <image src="../assets/images/zc.jpg" style="width: 100%;margin-top:20rpx; " mode="widthFix"/>
+        </view>
+        <view class="textbox">
+          <view class="size28">
+            <text class="tsbz" style="font-size:32rpx">廖勇 </text><text>渣车编号：</text><text class="tsbz" style="font-size:32rpx">Z01</text>
+            <text style="margin-left:20rpx">今日运输：<text class="tsbz">22</text>车</text>
+          </view>
+          <view class="size28">
+            <text>其中：</text>
+          </view>
+          <view class="size32">
+            <text style="margin-left:60rpx">外场04线：<text class="tsbz">22</text>车</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Screening from '../common/screening';
+
+export default class MSlagcarSearch extends wepy.page {
+  config = {
+    navigationBarBackgroundColor: '#000000',
+    navigationBarTextStyle: 'white',
+    navigationBarTitleText: '渣车查询',
+    backgroundColor: '#eeeeee',
+    backgroundTextStyle: 'light'
+  };
+  components = {
+    screening: Screening,
+  };
+
+  data = {
+    title: "廖勇",
+    slagcar:[]
+  };
+
+  methods = {
+    gosearch (e) {
+      var id = e.currentTarget.dataset.id;
+      wepy.navigateTo({
+        url:"slagcarsearch?id="+id,
+        success: function(res) {},
+        fail: function(res) {},
+        complete: function(res) {},
+      })
+    }
+  };
+}
+</script>

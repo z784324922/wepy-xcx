@@ -1,0 +1,146 @@
+<style lang="less">
+page{
+  background: #efeff4;
+}
+.mui-content{
+  padding-top:100rpx; 
+  border-top:1px solid #e3e3e5;
+  .slagcar-box{
+      overflow: hidden;
+      background: white;
+      border-bottom:1px solid #e3e3e5;  
+      .imgbox{
+      width: 140rpx;
+      height: 180rpx;
+      margin-left:20rpx; 
+      float: left;
+      }
+      .textbox{
+      width: 565rpx;
+      height: 100%;
+      padding-left: 25rpx;
+      margin-top:20rpx;
+      float: left;
+          .name{
+              line-height: 60rpx;
+              font-size: 32rpx;
+              font-weight: bold;
+              color: #1E90FF;
+          }
+      }
+  }
+}
+</style>
+<template>
+  <view class="mslagcareffciency">
+    <screening></screening>
+    <view class="mui-content">
+      <mtitle :title="title"></mtitle>
+      <view class="slagcar-box" @tap="gosearch" data-id="1">
+        <view class="imgbox">
+          <image src="../assets/images/zc.jpg" style="width: 100%;margin-top:20rpx; " mode="widthFix"/>
+        </view>
+        <view class="textbox">
+          <view class="size28">
+            <text>渣车编号：</text><text class="tsbz" style="font-size:32rpx">Z01 何伟</text>
+            <text style="margin-left:20rpx">今日运输：<text class="tsbz">22</text>车</text>
+          </view>
+          <view class="size28">
+            <text>其中：</text>
+          </view>
+          <view class="size32">
+            <text style="margin-left:60rpx">外场04线：22车</text>
+          </view>
+        </view>
+      </view>
+
+      <mtitle :title="title"></mtitle>
+      <view class="slagcar-box" @tap="gosearch" data-id="1">
+        <view class="imgbox">
+          <image src="../assets/images/zc.jpg" style="width: 100%;margin-top:20rpx; " mode="widthFix"/>
+        </view>
+        <view class="textbox">
+          <view class="size28">
+            <text>渣车编号：</text><text class="tsbz" style="font-size:32rpx">Z01 邓浩</text>
+            <text style="margin-left:20rpx">今日运输：<text class="tsbz">22</text>车</text>
+          </view>
+          <view class="size28">
+            <text>其中：</text>
+          </view>
+          <view class="size32">
+            <text style="margin-left:60rpx">外场04线：22车</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Screening from '../common/screening';
+import mdataMixin from '../mixins/mdata'
+import Mtitle from '../common/mtitle';
+
+export default class Mslagcareffciency extends wepy.page {
+  config = {
+    navigationBarBackgroundColor: '#000000',
+    navigationBarTextStyle: 'white',
+    navigationBarTitleText: '渣车效率',
+    backgroundColor: '#eeeeee',
+    backgroundTextStyle: 'light'
+  };
+  components = {
+    screening: Screening,
+    mtitle: Mtitle
+  };
+  mixins = [mdataMixin]
+
+  data = {
+    title: "廖勇",
+    slagcar:[]
+  };
+
+  getSlagcar(itemid,date) {
+    var params={
+      openid:this.openid,
+      itemid:itemid,
+      date:date
+    }
+    wepy.request({
+      url:'http://www.tulaoban.net/wechat/index/getTopSlagCarWorkList',
+      data:{
+        ...params
+      }
+    })
+    .then((res)=>{
+      return res.data;
+    })
+    .then(json=>{
+      if (json.code==0) {
+        this.slagcar = json.data;
+        console.log(this.slagcar)
+        this.$apply()     
+      }
+    })
+  }
+  events = {
+    'change': (itemid,date) => {
+      this.getSlagcar(itemid,date)
+    }
+  };
+
+  methods = {
+    gosearch (e) {
+      var id = e.currentTarget.dataset.id;
+      console.log(id);
+      wepy.navigateTo({
+        url:"slagcarsearch?id="+id,
+        success: function(res) {},
+        fail: function(res) {},
+        complete: function(res) {},
+      })
+    }
+  };
+}
+</script>

@@ -1,0 +1,126 @@
+<style type="less">
+
+</style>
+<template>
+    <view class="screening"> 
+        <view class="title-ul">
+            <view class="title-li">
+                <picker bindchange='bindPickerChange' value="{{index}}" range="{{aProject}}">  
+                    <view class="picker">  
+                        {{aProject[index]}}  
+                    </view>  
+                </picker>  
+            </view>
+            <view wx-if="{{ismonth==0}}" class="title-li" style="border-left: solid 1px #d3d3d3;">
+                <picker mode="date" value="{{date}}" start="2015-09-01" end="{{now}}" bindchange="bindDateChange">
+                    <view class="picker">
+                        {{date}}
+                    </view>
+                </picker>
+            </view>
+            <view wx-if="{{ismonth==1}}" class="title-li" style="border-left: solid 1px #d3d3d3;">
+                <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{monthIndex}}" range="{{monthArray}}">
+                    <view class="picker">
+                        {{monthArray[0][monthIndex[0]]}}-{{monthArray[1][monthIndex[1]]}}
+                    </view>
+                </picker>
+            </view>
+        </view>
+    </view>
+</template>
+<script>
+import wepy from 'wepy';
+
+export default class Screening extends wepy.component {
+    data={
+        date:"",
+        month:"",
+        projects:"",
+        itemid:"",
+        openid:"",
+        index:"",
+        aProject:"",
+        years:[],  //可选年份
+        months:[],
+        monthArray: [],
+        monthIndex: [],
+        ismonth:0  
+    }
+    methods = {
+        //选择项目  
+        bindPickerChange (e) {  
+            this.index = e.detail.value;
+            this.$parent.$parent.globalData.index = e.detail.value;
+            this.itemid = this.projects[this.index].id;
+            this.$parent.$parent.globalData.itemid = this.projects[this.index].id;
+            this.$emit('change', this.itemid, this.date);
+        },
+        //选择日期
+        bindDateChange (e) {
+            this.date = e.detail.value;
+            this.$parent.$parent.globalData.date = e.detail.value;
+            this.$emit('change', this.itemid, this.date);
+        },
+        //选择月份
+        bindMultiPickerChange(e) {
+            this.monthIndex = e.detail.value;
+            var str = this.monthArray[0][this.monthIndex[0]]+"-"+this.monthArray[1][this.monthIndex[1]];
+            this.month = str;
+            this.$parent.$parent.globalData.yearsIndex = e.detail.value[0];
+            this.$parent.$parent.globalData.monthIndex = e.detail.value[1];
+            this.$emit('change', this.itemid, this.month);
+        }
+    };
+    watch = {
+        itemid(newValue, oldValue){
+            // this.$emit('change', newValue, this.date);
+        },
+        date(newValue, oldValue){
+            // this.$emit('change', this.itemid, newValue);
+        },
+    }
+    onLoad () {
+
+        if(this.$parent.$parent.globalData.years.length == 0){
+            const mdate = new Date();
+            const years = [];
+            const months = [];
+            var yearsIndex = -1;
+            var monthIndex = mdate.getMonth();
+            for (let i = 2017; i <= mdate.getFullYear(); i++) {
+                years.push(i);
+                yearsIndex++;
+            }
+
+            for (let i = 1 ; i <= 12; i++) {
+                if(i<10){
+                    months.push("0"+i)
+                }else{
+                    months.push(i)
+                }    
+            }
+            this.$parent.$parent.globalData.yearsIndex = yearsIndex;
+            this.$parent.$parent.globalData.monthIndex = monthIndex;
+            this.$parent.$parent.globalData.years = years;
+            this.$parent.$parent.globalData.months = months;
+        }
+
+        this.date = this.$parent.$parent.globalData.date;
+        this.projects = this.$parent.$parent.globalData.projects ;
+        this.itemid = this.$parent.$parent.globalData.itemid;
+        this.openid = this.$parent.$parent.globalData.openid;
+        this.index = this.$parent.$parent.globalData.index;
+        this.aProject = this.$parent.$parent.globalData.aProject;
+        this.ismonth = this.$parent.$parent.globalData.ismonth;
+        this.monthArray = [this.$parent.$parent.globalData.years ,this.$parent.$parent.globalData.months];
+        this.monthIndex = [this.$parent.$parent.globalData.yearsIndex,this.$parent.$parent.globalData.monthIndex];
+        
+        if(this.ismonth==0){
+            this.$emit('change', this.itemid, this.date);
+        }else{
+            var str =  this.monthArray[0][this.monthIndex[0]]+"-"+this.monthArray[1][this.monthIndex[1]];
+            this.$emit('change', this.itemid, str);
+        }
+    }
+}
+</script>

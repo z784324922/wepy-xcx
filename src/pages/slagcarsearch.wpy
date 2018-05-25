@@ -1,0 +1,113 @@
+<style lang="less">
+page {
+  background: #efeff4;
+}
+.mui-content {
+  border-top: 1px solid #e3e3e5;
+  .slagcar-box {
+    overflow: hidden;
+    background: white;
+    border-bottom: 1px solid #e3e3e5;
+    .imgbox {
+      width: 140rpx;
+      height: 180rpx;
+      margin-left: 20rpx;
+      float: left;
+    }
+    .textbox {
+      width: 540rpx;
+      height: 100%;
+      padding-left: 25rpx;
+      margin-top: 20rpx;
+      float: left;
+    }
+  }
+}
+.title{
+    height: 138rpx;
+    padding-top:100rpx; 
+    background: #efeff4;
+    overflow: hidden;
+    .title-box{
+        margin: 15rpx auto; 
+        width: 95%;
+        height: 110rpx;
+        line-height: 60rpx;
+        border-radius: 6rpx;
+        background: white; 
+        box-shadow: 0 1px 2px rgba(0,0,0,.3);
+        text-align: center;
+        view{
+            height: 55rpx;
+        }
+    }
+}
+</style>
+<template>
+  <view class="slagcarSearch">
+    <screening></screening>
+    <view class="title">
+        <view class="title-box" style="font-size:32rpx;">
+            <view>
+                <image src="../assets/images/tx.png" style="width: 26rpx; height: 26rpx;margin-right: 10rpx " />
+                渣车手：<text class="tsbz" style="font-size:32rpx;">{{title}}</text>
+            </view>
+            <view>
+                渣车编号：<text class="tsbz" style="color:red">Z01</text>　　其他模式
+            </view>
+        </view>
+    </view>
+    <view class="mui-content">
+        <view class="slagcar-box" @tap="golineplayback" data-id="1">                    
+            <view class="imgbox">
+                <image src="../assets/images/zcno.png"  style="width: 100%;height:140rpx;margin-top:20rpx; "/>
+            </view>
+            <view class="textbox">
+                <view class="size28" style="margin-top:10rpx">
+                    <text class="tlbz">外场04线</text><text style="font-size:"></text>　　挖机：<text class="tsbz">03</text><text style="float:right;font-size:32rpx"><text class="tsbz" style="font-size:28rpx">审核通过</text></text>
+                </view>
+                <view class="size28" style="margin-top:10rpx">
+                    <text class="tsbz">19:38-19:46</text>　　耗时：<text class="tsbz">25</text>分<text class="tsbz">40</text>秒
+                </view>
+            </view>
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Screening from '../common/screening';
+import Mtitle from '../common/mtitle';
+
+export default class SlagcarSearch extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        navigationBarTitleText: '渣车查询',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light'
+    };
+    components = {
+        screening: Screening,
+        mtitle: Mtitle
+    };
+
+    data = {
+        title: '廖勇'
+    };
+
+    methods = {
+        golineplayback (e) {
+            var id = e.currentTarget.dataset.id;
+            console.log(id);
+            wepy.navigateTo({
+                url:"lineplayback?id="+id,
+                success: function(res) {},
+                fail: function(res) {},
+                complete: function(res) {},
+            })
+        }
+    };
+}
+</script>

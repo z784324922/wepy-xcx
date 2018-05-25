@@ -1,0 +1,163 @@
+<style lang="less">
+page {
+  background: #efeff4;
+}
+.mui-content {
+  padding-top:100rpx; 
+  border-top: 1px solid #e3e3e5;
+  .backhoe-box {
+    background: white;
+    height: 295rpx;
+    border-bottom: 1px solid #e3e3e5;
+    .imgbox {
+      width: 140rpx;
+      height: 100%;
+      margin-left: 20rpx;
+      float: left;
+    }
+    .textbox {
+      width: 565rpx;
+      height: 100%;
+      padding-left: 25rpx;
+      float: left;
+      .name {
+        line-height: 60rpx;
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #1e90ff;
+      }
+    }
+  }
+}
+</style>
+<template>
+  <view class="mbackhoeeffciency">
+    <screening></screening>
+    <view class="mui-content">
+      <mtitle :title="title"></mtitle>
+      <view class="backhoe-box" @tap="gosearch" data-id="1">
+        <view class="imgbox">
+          <image src="../assets/images/wj.jpg" style="width: 100%;margin-top:60rpx; " mode="widthFix"/>
+        </view>
+        <view class="textbox">
+          <text class="name">成为兵</text>
+          <view class="size28">
+            <text>挖机编号：</text><text class="tsbz">01</text>
+            <text style="margin-left:20rpx">品牌型号：</text><text class="tsbz">小松PC300-7</text>
+          </view>
+          <view class="size28">
+            <text>今日挖掘：<text class="tsbz">81</text>车</text>
+            <text style="margin-left:20rpx">总 工 时：<text class="tsbz">11.0</text>小时</text>
+          </view>
+          <view class="size28">
+            <text>其中挖掘：</text><text class="tsbz">11</text><text>小时</text>
+            <text style="margin-left:20rpx">辅助工时：<text class="tsbz">0</text>小时</text>
+          </view>
+          <view class="size28">
+            <text decode="{{true}}">挖掘效率：<text class="tsbz">7.4</text>车/小时</text>
+            <text style="margin-left:20rpx"><text class="tsbz">8</text>分<text class="tsbz">12</text>秒/车</text>
+          </view>
+          <view class="size28">
+              <text>燃油效率：<text class="tsbz">1.4</text>升/车</text>
+              <text style="margin-left:20rpx">加油总量：<text class="tsbz">1024</text>升</text>
+          </view>
+        </view>
+      </view>
+
+      <mtitle :title="title"></mtitle>
+      <view class="backhoe-box" @tap="gosearch" data-id="1">
+        <view class="imgbox">
+          <image src="../assets/images/wj.jpg" style="width: 100%;margin-top:60rpx; " mode="widthFix"/>
+        </view>
+        <view class="textbox">
+          <text class="name">成为兵</text>
+          <view class="size28">
+            <text>挖机编号：</text><text class="tsbz">01</text>
+            <text style="margin-left:20rpx">品牌型号：</text><text class="tsbz">小松PC300-7</text>
+          </view>
+          <view class="size28">
+            <text>今日挖掘：<text class="tsbz">81</text>车</text>
+            <text style="margin-left:20rpx">总 工 时：<text class="tsbz">11.0</text>小时</text>
+          </view>
+          <view class="size28">
+            <text>其中挖掘：</text><text class="tsbz">11</text><text>小时</text>
+            <text style="margin-left:20rpx">辅助工时：<text class="tsbz">0</text>小时</text>
+          </view>
+          <view class="size28">
+            <text decode="{{true}}">挖掘效率：<text class="tsbz">7.4</text>车/小时</text>
+            <text style="margin-left:20rpx"><text class="tsbz">8</text>分<text class="tsbz">12</text>秒/车</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Screening from '../common/screening';
+import mdataMixin from '../mixins/mdata'
+import Mtitle from '../common/mtitle';
+
+export default class Mbackhoeeffciency extends wepy.page {
+  config = {
+    navigationBarBackgroundColor: '#000000',
+    navigationBarTextStyle: 'white',
+    navigationBarTitleText: '挖机效率',
+    backgroundColor: '#eeeeee',
+    backgroundTextStyle: 'light'
+  };
+  components = {
+    screening: Screening,
+    mtitle: Mtitle
+  };
+  mixins = [mdataMixin]
+
+  data = {
+    title: '刑老板',
+    backhoe:[]
+  };
+
+  getBackhoe(itemid,date) {
+    var params={
+      openid:this.openid,
+      itemid:itemid,
+      date:date
+    }
+    wepy.request({
+      url:'http://www.tulaoban.net/wechat/index/getTopBackhoeWorkList',
+      data:{
+        ...params
+      }
+    })
+    .then((res)=>{
+      return res.data;
+    })
+    .then(json=>{
+      if (json.code==0) {
+        this.backhoe = json.data;
+        console.log(this.backhoe)
+        this.$apply()     
+      }
+    })
+  }
+  events = {
+    'change': (itemid,date) => {
+      this.getBackhoe(itemid,date)
+    }
+  };
+
+  methods = {
+    gosearch (e) {
+      var id = e.currentTarget.dataset.id;
+      console.log(id);
+      wepy.navigateTo({
+        url:"backhoesearch?id="+id,
+        success: function(res) {},
+        fail: function(res) {},
+        complete: function(res) {},
+      })
+    }
+  };
+}
+</script>

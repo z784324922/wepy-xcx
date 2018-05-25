@@ -1,0 +1,107 @@
+<style lang="less">
+.report {
+    overflow: hidden;
+    .report-wrap{
+        padding: 40rpx;
+        .title{
+            height: 40rpx;
+            font-size: 30rpx;
+            color: #404346;
+        }
+    }
+    .btn-wrap{
+        overflow: hidden;
+        padding: 0 10rpx;
+        .selectBox{
+            overflow: hidden;
+            width: 100%;
+            .btn{
+                height: 230rpx;
+                width: 25%;
+                float: left;
+                .icon-btn{
+                    width: 120rpx;
+                    height: 120rpx;
+                    margin: 0 auto;
+                    border: 2rpx solid #e1e1e1;
+                    border-radius: 62rpx;
+                    image{
+                        width: 60rpx;
+                        height: 60rpx;
+                        margin-left: 30rpx;
+                        margin-top: 30rpx;
+                    }
+                }
+                .text-wrap{
+                    margin-top:30rpx;
+                    text-align: center;
+                }
+                .text{
+                    font-size: 30rpx;
+                    color: #585c64;
+                }
+            }
+        }
+    }
+}
+
+</style>
+<template>
+    <view class="report">
+        <view class="report-wrap">
+            <view class="title">请选择您要查询的报表</view>
+        </view>
+        <view class="btn-wrap">
+            <view class="selectBox">
+                <view class="btn" @tap='goDaily'>
+                    <view class="icon-btn">
+                        <image src="../assets/iconfont/r-daily.png" ></image>
+                    </view>
+                    <view class="text-wrap">
+                        <text class="text">日报</text>
+                    </view>
+                </view>
+                <view class="btn" @tap='goMonth'>
+                    <view class="icon-btn">
+                        <image src="../assets/iconfont/r-mont.png" ></image>
+                    </view>
+                    <view class="text-wrap">
+                        <text class="text">月报</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Report extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        navigationBarTitleText: '报表',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light'
+    };
+
+    data = {
+    };
+
+    methods = {
+        goDaily () {
+            this.$parent.globalData.ismonth = 0;
+            wepy.navigateTo({
+                url: 'daily'
+            })
+        },
+        goMonth () {
+            this.$parent.globalData.ismonth = 1;
+            wepy.navigateTo({
+                url: 'month'
+            }) 
+        },
+    };
+}
+</script>

@@ -1,0 +1,148 @@
+<style lang="less">
+page {
+  background: #efeff4;
+}
+.mui-content {
+  border-top: 1px solid #e3e3e5;
+  .backhoe-box {
+    overflow: hidden;
+    background: white;
+    border-bottom: 1px solid #e3e3e5;
+    .imgbox {
+      width: 140rpx;
+      height: 180rpx;
+      margin-left: 20rpx;
+      float: left;
+    }
+    .textbox {
+      width: 540rpx;
+      height: 100%;
+      padding-left: 25rpx;
+      margin-top: 20rpx;
+      float: left;
+    }
+  }
+}
+.title{
+    height: 138rpx;
+    padding-top:100rpx; 
+    background: #efeff4;
+    overflow: hidden;
+    .title-box{
+        margin: 15rpx auto; 
+        width: 90%;
+        height: 110rpx;
+        line-height: 60rpx;
+        border-radius: 6rpx;
+        background: white; 
+        box-shadow: 0 1px 2px rgba(0,0,0,.3);
+        text-align: center;
+        view{
+            height: 55rpx;
+        }
+    }
+}
+</style>
+<template>
+  <view class="mslagcareffciency">
+    <screening></screening>
+    <view class="title">
+        <view class="title-box" style="font-size:32rpx;">
+            <view>
+                <image src="../assets/images/tx.png" style="width: 26rpx; height: 26rpx;margin-right: 10rpx " />
+                挖机手：<text class="tsbz">{{title}}</text>
+            </view>
+            <view>
+                渣车编号：<text class="tsbz">01</text> 品牌型号：<text class="tsbz" style="font-size:30rpx">小松PC300-7</text>
+            </view>
+        </view>
+    </view>
+    <view class="mui-content">
+        <view class="backhoe-box">                    
+            <view class="imgbox">
+            <image @tap="enlargeImg" data-src="http://tulaoban.oss-cn-shanghai.aliyuncs.com/earthworkapi/2018/3/20/6f7a7b4c0d6c442da2020264acd018bf" src="http://tulaoban.oss-cn-shanghai.aliyuncs.com/earthworkapi/2018/3/20/6f7a7b4c0d6c442da2020264acd018bf" style="width: 100%;height:140rpx;margin-top:20rpx; "/>
+            </view>
+            <view class="textbox">
+            <view class="size28">
+                渣　　车：<text class="tsbz" style="font-size:32rpx">Z11</text><text style="float:right;font-size:32rpx"><text class="tsbz" style="font-size:32rpx">审核通过</text></text>
+            </view>
+            <view class="size28">
+                岩石类型：砂土
+            </view>
+            <view class="size28">
+                耗　　时：8分钟　　19：38-19.46
+            </view>
+            </view>
+        </view>
+        <view class="backhoe-box">                    
+            <view class="imgbox">
+            <image @tap="enlargeImg" data-src="http://tulaoban.oss-cn-shanghai.aliyuncs.com/earthworkapi/2018/3/20/6f7a7b4c0d6c442da2020264acd018bf" src="http://tulaoban.oss-cn-shanghai.aliyuncs.com/earthworkapi/2018/3/20/6f7a7b4c0d6c442da2020264acd018bf" style="width: 100%;height:140rpx;margin-top:20rpx; "/>
+            </view>
+            <view class="textbox">
+                <view class="size28">
+                    渣　　车：<text class="tsbz" style="font-size:32rpx">Z11</text><text style="float:right;font-size:32rpx"><text class="tsbz" style="font-size:32rpx">审核通过</text></text>
+                </view>
+                <view class="size28">
+                    岩石类型：砂土
+                </view>
+                <view class="size28">
+                    耗　　时：8分钟　　19：38-19.46
+                </view>
+            </view>
+        </view>
+        <view class="backhoe-box">                    
+            <view class="imgbox">
+                <image @tap="enlargeImg" data-src="http://tulaoban.oss-cn-shanghai.aliyuncs.com/earthworkapi/2018/3/20/6f7a7b4c0d6c442da2020264acd018bf" src="http://tulaoban.oss-cn-shanghai.aliyuncs.com/earthworkapi/2018/3/20/6f7a7b4c0d6c442da2020264acd018bf" style="width: 100%;height:140rpx;margin-top:20rpx; "/>
+            </view>
+            <view class="textbox">
+                <view class="size28">
+                    渣　　车：<text class="tsbz" style="font-size:32rpx">Z11</text><text style="float:right;font-size:32rpx"><text class="tsbz" style="font-size:32rpx">审核通过</text></text>
+                </view>
+                <view class="size28">
+                    岩石类型：砂土
+                </view>
+                <view class="size28">
+                    耗　　时：8分钟　　19：38-19.46
+                </view>
+            </view>
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Screening from '../common/screening';
+import Mtitle from '../common/mtitle';
+
+export default class BackhoeSearch extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        navigationBarTitleText: '挖机查询',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light'
+    };
+    components = {
+        screening: Screening,
+        mtitle: Mtitle
+    };
+
+    data = {
+        title: '成为兵'
+    };
+
+    methods = {
+        enlargeImg (e) {
+            wepy.previewImage({
+                current: e.target.dataset.src,
+                urls: [e.target.dataset.src],//内部的地址为绝对路径
+                fail: function() {
+        　　　　 },
+                complete: function () {
+                },
+            })
+        }
+    };
+}
+</script>

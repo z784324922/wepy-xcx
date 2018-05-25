@@ -1,0 +1,152 @@
+<style lang="less">
+page {
+  background: #efeff4;
+}
+.mui-content {
+    padding-top: 100rpx;
+    border-top: 1px solid #e3e3e5;
+    .refueling-box {
+        overflow: hidden;
+        background: white;
+        border-bottom: 1px solid #e3e3e5;
+        .imgbox {
+        width: 140rpx;
+        height: 180rpx;
+        margin-left: 20rpx;
+        float: left;
+        }
+        .textbox {
+        width: 540rpx;
+        height: 100%;
+        padding-left: 25rpx;
+        margin-top: 20rpx;
+        float: left;
+        }
+    }
+}
+.title{
+    height: 138rpx;
+    background: #efeff4;
+    overflow: hidden;
+    .title-box{
+        margin: 15rpx auto; 
+        width: 90%;
+        height: 110rpx;
+        line-height: 60rpx;
+        border-radius: 6rpx;
+        background: white; 
+        box-shadow: 0 1px 2px rgba(0,0,0,.3);
+        text-align: center;
+        view{
+            height: 55rpx;
+        }
+    }
+}
+</style>
+<template>
+  <view class="mslagcareffciency">
+    <screening></screening>
+    <view class="mui-content">
+        <view class="title">
+            <view class="title-box" style="font-size:32rpx;">
+                <view>
+                    <image src="../assets/images/yt.png" style="width:50rpx; height: 30rpx" />
+                    加油点：<text class="tsbz">{{title}}</text>
+                </view>
+                <view>
+                    来油：<text class="tsbz">0.00</text>升 加油：<text class="tsbz">2066.26</text>升
+                </view>
+            </view>
+        </view>
+        <view class="refueling-box" @tap="goRefuelingDetail" data-id="加油工单id">                    
+            <view class="imgbox">
+                <image src="../assets/images/wj.jpg" style="width: 100%;margin-top:20rpx; " mode="widthFix"/>
+            </view>
+            <view class="textbox">
+                <view>
+                    <text class="tsbz" style="font-size:32rpx">加油</text><text style="float:right;font-size:32rpx"><text class="tsbz" style="font-size:32rpx">266</text>升</text>
+                </view>
+                <view class="size28">
+                    <text>加油设备编号：<text class="tsbz" style="font-size:32rpx">04</text></text>
+                </view>
+                <view class="size28">
+                    <text>加油时间：</text><text class="tsbz" style="font-size:32rpx">12:39</text>
+                </view>
+            </view>
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Screening from '../common/screening';
+import mdataMixin from '../mixins/mdata'
+import Mtitle from '../common/mtitle';
+
+export default class Mrefuelingeffciency extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        navigationBarTitleText: '油料查询',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light'
+    };
+    components = {
+        screening: Screening,
+        mtitle: Mtitle
+    };
+    mixins = [mdataMixin]
+
+    data = {
+        title: 'JYJ01',
+        refueling:[]
+    };
+
+    getRefueling(itemid,date) {
+        var params={
+            openid:this.openid,
+            itemid:itemid,
+            date:date
+        }
+        wepy.request({
+            url:'http://www.tulaoban.net/wechat/index/getOilList',
+            header: {  
+                "Content-Type": "application/x-www-form-urlencoded"  
+            },
+            data:{
+                ...params
+            },
+            method :"POST"
+        })
+        .then((res)=>{
+            return res.data;
+        })
+        .then(json=>{
+            if (json.code==0) {
+                this.refueling = json.data;
+                console.log(this.refueling)
+                this.$apply()     
+            }
+        })
+    }
+    events = {
+        'change': (itemid,date) => {
+        this.getRefueling(itemid,date)
+        }
+    };
+
+    methods = {
+        goRefuelingDetail (e) {
+            var id = e.currentTarget.dataset.id;
+            console.log(id);
+            wepy.navigateTo({
+                url:"RefuelingDetails?id="+id,
+                success: function(res) {},
+                fail: function(res) {},
+                complete: function(res) {},
+            })
+        }
+    };
+}
+</script>

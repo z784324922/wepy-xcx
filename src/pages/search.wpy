@@ -1,0 +1,108 @@
+<style lang="less">
+.search {
+    overflow: hidden;
+    .report-wrap{
+        padding: 40rpx;
+        .title{
+            height: 40rpx;
+            font-size: 30rpx;
+            color: #404346;
+        }
+    }
+    .btn-wrap{
+        overflow: hidden;
+        padding: 0 10rpx;
+        .selectBox{
+            overflow: hidden;
+            width: 100%;
+            .btn{
+                height: 230rpx;
+                width: 25%;
+                float: left;
+                .icon-btn{
+                    width: 120rpx;
+                    height: 120rpx;
+                    margin: 0 auto;
+                    border: 2rpx solid #e1e1e1;
+                    border-radius: 62rpx;
+                    image{
+                        width: 70rpx;
+                        height: 70rpx;
+                        margin-left: 25rpx;
+                        margin-top: 25rpx;
+                    }
+                }
+                .text-wrap{
+                    margin-top:30rpx;
+                    text-align: center;
+                }
+                .text{
+                    font-size: 30rpx;
+                    color: #585c64;
+                }
+            }
+        }
+    }
+}
+
+</style>
+<template>
+    <view class="search">
+        <view class="report-wrap">
+            <view class="title">请选择您要查询的信息</view>
+        </view>
+        <view class="btn-wrap">
+            <view class="selectBox">
+                <view class="btn">
+                    <view class="icon-btn" @tap="navigaTo('mbackhoesearch')">
+                        <image src="../assets/iconfont/s-backhoe.png" ></image>
+                    </view>
+                    <view class="text-wrap">
+                        <text class="text">挖机</text>
+                    </view>
+                </view>
+                <view class="btn">
+                    <view class="icon-btn" @tap="navigaTo('mslagcarsearch')">
+                        <image src="../assets/iconfont/s-slagcar.png" ></image>
+                    </view>
+                    <view class="text-wrap">
+                        <text class="text">渣车</text>
+                    </view>
+                </view>
+                <view class="btn">
+                    <view class="icon-btn" @tap="navigaTo('mrefueling')">
+                        <image src="../assets/iconfont/s-refuel.png" ></image>
+                    </view>
+                    <view class="text-wrap">
+                        <text class="text">油料</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class Search extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        navigationBarTitleText: '查询',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light'
+    };
+
+    data = {
+    };
+
+    methods = {
+        navigaTo(url) {
+            wepy.navigateTo({
+                url: url
+            })
+        },
+    };
+}
+</script>

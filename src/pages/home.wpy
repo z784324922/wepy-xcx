@@ -1,0 +1,293 @@
+<style lang="less">
+.home{
+  width: 100%;
+  height: 100%;
+  .slagcarImg{
+      position: absolute;
+      top: 0;
+      width: 100%; 
+      height: 500rpx;
+      border-bottom: 1rpx solid #4b4c50;
+  }
+  .titleBox{
+    position:absolute; 
+    z-index:1;
+    top:20rpx;
+    width :400rpx; 
+    height: 110rpx;
+    left:220rpx;
+    border: 1px solid #bbbbbb;
+    background: white;
+    .title-message{
+      position: relative;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      min-height: 44rpx;
+      padding: 5rpx 15rpx;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      font-size: 35rpx;
+      // color: #9c9c9c
+    }
+    .textBox{
+      float: left;
+      font-size: 25rpx;
+    }
+  }
+  .project{
+    position:absolute; 
+    z-index:1;
+    top:35rpx;
+    width :76rpx; 
+    height: 76rpx;
+    left:30rpx;
+    background: white;
+    border-radius: 38rpx;
+  }
+  .report{
+    position:absolute; 
+    z-index:1;
+    bottom:155rpx;
+    width :76rpx; 
+    height: 76rpx;
+    left:40rpx;
+    background: white;
+    border-radius: 38rpx;
+    border: 1px solid #d1d0ce;
+  }
+  .search{
+    position:absolute; 
+    z-index:1;
+    bottom:50rpx;
+    width :76rpx; 
+    height: 76rpx;
+    left:40rpx;
+    background: white;
+    border-radius: 38rpx;
+    border: 1px solid #d1d0ce;
+  }
+  .my{
+    position:absolute; 
+    z-index:1;
+    bottom:40rpx;
+    width :165rpx; 
+    height: 96rpx;
+    right: -40rpx;
+    background: white;
+    border-top-left-radius: 48rpx;
+    border-bottom-left-radius: 48rpx;
+    border: 1px solid #d1d0ce;
+    .mimg{
+      width: 76rpx;
+      height: 76rpx;
+      margin-left: 10rpx;
+      margin-top: 10rpx;
+      border-radius: 48rpx;
+      background: #f5f6f8;
+    }
+  }
+  .icon{
+    width:50rpx;
+    height:50rpx;
+    margin-left:13rpx;
+    margin-top:13rpx;
+  }
+  .detail{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50rpx;
+    height: 0;
+    margin: auto;
+    height: 70rpx;
+    width:150rpx;
+    border:2rpx solid #356ccc;
+    border-radius: 10rpx;
+    background: #4287ff;
+    color: white;
+    line-height: 70rpx;
+    font-size: 30rpx;
+    text-align: center;
+  }
+}
+</style>
+<template>
+  <view class="home" @tap="onMapClick" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
+    <map id="map" @markertap="onMarkerClick" markers="{{markers}}" style="width: 100%; height: 100%;" polyline="{{polyline}}" show-location>
+      <cover-view class="titleBox">
+        <cover-view class="title-message">
+          <cover-image src="../assets/iconfont/s-backhoe.png" style="width: 60rpx; height: 45rpx;margin-right:10rpx;" />
+          <cover-view style="text-align:left;width:500rpx">8台　20车　23小时</cover-view>
+        </cover-view>
+        <cover-view class="title-message">
+          <cover-image src="../assets/iconfont/s-slagcar.png" style="width: 60rpx; height: 45rpx;margin-right:10rpx;" />
+          <cover-view style="text-align:left;width:500rpx">30辆　已运输30车</cover-view>
+        </cover-view>
+      </cover-view>
+      <cover-view class="project">
+        <cover-image src="../assets/iconfont/h-project.png" @tap="toggleDialog" mode="widthFix"/>
+      </cover-view>
+      <cover-view class="report">
+        <cover-image src="../assets/iconfont/h-report.png" @tap="goReport" class="icon" mode="widthFix"/>
+      </cover-view>
+      <cover-view class="search">
+        <cover-image src="../assets/iconfont/h-search.png" @tap="goSearch" class="icon" mode="widthFix"/>
+      </cover-view>
+      <cover-view class="my">
+        <cover-view class="mimg">
+          <cover-image src="../assets/iconfont/h-my.png" @tap="goMy" class="icon" mode="widthFix"/>
+        </cover-view>
+      </cover-view>
+      <cover-view @tap="onDetailClick" wx-if="{{showBtn}}" class="detail">
+        详细信息
+      </cover-view>
+    </map>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import {postRequest} from "../actions"
+export default class Home extends wepy.page {
+  config = {
+    navigationBarTitleText: '土老板',
+    navigationBarBackgroundColor: '#000000',
+    navigationBarTextStyle: 'white',
+    backgroundColor: '#eeeeee',
+    backgroundTextStyle: 'light'
+  }
+
+  data = {
+    markerId:"",
+    showDialog: true,
+    showmap:false,
+    markers: [],
+    showBtn:false,
+    polyline: [{
+      points: [{
+        longitude: 106.46107739685061,
+        latitude: 29.542921478838274
+      }, {
+        longitude: 106.45936078308108,
+        latitude: 29.549791027641188
+      },{
+        longitude: 106.44863194702151,
+        latitude: 29.563752693182828
+      },{
+        longitude: 106.4442545819092,
+        latitude: 29.550687021325402
+      },{
+        longitude: 106.44210881469729,
+        latitude: 29.538963809436577
+      },{
+        longitude: 106.45189351318362,
+        latitude: 29.531720126487887
+      },{
+        longitude: 106.45970410583499,
+        latitude: 29.53717160629451
+      },{
+        longitude: 106.46107739685061,
+        latitude: 29.542921478838274
+      }],
+      color:"#d3c19d",
+      width: 2,
+    }],
+    centerLatitude:"",
+    centerLongitude:""
+  };
+  methods = {
+    toggleDialog() { 
+      var that = this;
+      wx.showActionSheet({  
+          itemList: ['项目1', '项目2', '项目3'],  
+          success: function(res) {  
+              that.map.moveToLocation();
+              console.log(res.tapIndex)  
+          },  
+          fail: function(res) {  
+              console.log(res.errMsg)  
+          }  
+      })  
+    },
+    goMy() {
+      wepy.navigateTo({
+        url: 'my'
+      })
+    },
+    goReport() {
+      wepy.navigateTo({
+        url: 'report'
+      })
+    },
+    goSearch() {
+      this.$parent.globalData.ismonth = 0;
+      wepy.navigateTo({
+        url: 'search'
+      })
+    },
+    //开始触摸
+    touchStart(e) {
+      // console.log("开始触摸")
+    },
+    //开始滑动
+    touchMove(e) {
+      // console.log("开始滑动")
+    },
+    onMarkerClick(e) {
+      this.showBtn = true;
+      this.markerId = e.markerId;
+      // wepy.navigateTo({url:"slagcarsearch?id="+e.markerId})
+    },
+    touchEnd(e) {
+      let that = this;
+      this.map.getCenterLocation({
+        success: function(res){
+          that.centerLatitude = res.latitude;
+          that.centerLongitude = res.longitude;
+        }
+      })
+    },
+    onMapClick(e){
+      console.log(e);
+      this.showBtn = false;
+    },
+    //查看详情
+    onDetailClick(){
+      console.log(this.markerId)
+      wepy.navigateTo({
+        url: 'slagcarsearch?id='+this.markerId
+      })
+    }
+  }
+  onReady(){
+    // wx.getStorage({
+    //   key: 'unionId',
+    //   success: function(res) {
+    //     if(!res.data){
+    //       wepy.redirectTo({
+    //         url: 'login'
+    //       })
+    //     }
+    //   },
+    //   fail:(res)=>{
+    //     wepy.redirectTo({
+    //       url: 'login'
+    //     })
+    //   }
+    // })
+    this.map = wx.createMapContext('map');
+    this.map.getCenterLocation();
+  }
+  async onLoad(){  
+    console.log(111);
+    this.markers = await postRequest("/getMarkers");
+    await  this.map.moveToLocation(); //将地图中心移动到当前定位点
+    this.$apply() 
+  }
+}
+</script>

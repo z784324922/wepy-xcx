@@ -1,0 +1,15 @@
+{
+	"description": "tulaoban project",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wxe5a34576a3a16aab",
+	"projectname": "tulaoban_weixin",
+	"miniprogramRoot": "./dist",
+	"condition": {}
+}

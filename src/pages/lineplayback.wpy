@@ -1,0 +1,156 @@
+<style lang="less">
+page {
+  background: #efeff4;
+  overflow:hidden;
+}
+.linePlayBack{
+    width: 100%;
+    height: 100%;
+    .slagcarImg{
+        position: absolute;
+        top: 0;
+        width: 100%; 
+        height: 500rpx;
+        border-bottom: 1rpx solid #4b4c50;
+    }
+    .detail{
+        position:absolute; 
+        z-index:50;
+        bottom:0px;
+        width :100%; 
+        right:0px; 
+        left:0px;
+        .mui-card{
+            border-top: 1px solid #eeece9;
+            border-left: 1px solid #d8d6d4;
+            border-right: 1px solid #d8d6d4;
+            border-bottom:2px solid #bcbbb9;
+        }
+        .mui-card-content-inner{
+            overflow: hidden;
+            .box-left,.box-right{
+                color: #8f8f94;
+                width: 50%;
+                font-size: 28rpx;
+            }
+            .box-left{
+                float:left;
+            }
+            .box-right{
+                float:right;
+            }
+        }
+    }
+}
+</style>
+<template>
+    <view class="linePlayBack">
+        <map id="map" polyline="{{polyline}}" latitude="{{lat}}" longitude="{{lng}}" style="width: 100%; height: 100%;" markers="{{markers}}" show-location>
+            <cover-image src="http://tulaoban.oss-cn-shanghai.aliyuncs.com/earthworkapi/2018/3/20/825f3fe00ee644e0b48aa349c2284fac" class="slagcarImg"/>
+            <cover-view class="detail">
+                <cover-view class="mui-card">
+                    <cover-view class="mui-card-content">
+                        <cover-view class="mui-card-content-inner" style="padding:20px 30px;">
+                            <cover-view class="box-left">
+                                <cover-view>线　　路：外场04线</cover-view>
+                                <cover-view style="margin-top:10rpx;">起始时间：18:46</cover-view>
+                            </cover-view>
+                            <cover-view class="box-right">
+                                <cover-view>线路总长：1000米</cover-view>
+                                <cover-view style="margin-top:10rpx;">结束时间：19:01</cover-view>
+                            </cover-view>
+                        </cover-view>
+                    </cover-view>
+                </cover-view>
+            </cover-view>
+        </map>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class LinePlayBack extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        navigationBarTitleText: '线路回放',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light',
+        disableScroll: true
+    };
+
+    data = {
+        lat:0,
+        lng:0,
+        polyline: [{
+            points: [{
+                longitude: 106.46107739685061,
+                latitude: 29.542921478838274
+            }, {
+                longitude: 106.45936078308108,
+                latitude: 29.549791027641188
+            },{
+                longitude: 106.44863194702151,
+                latitude: 29.563752693182828
+            },{
+                longitude: 106.4442545819092,
+                latitude: 29.550687021325402
+            },{
+                longitude: 106.44210881469729,
+                latitude: 29.538963809436577
+            },{
+                longitude: 106.45189351318362,
+                latitude: 29.531720126487887
+            },{
+                longitude: 106.45970410583499,
+                latitude: 29.53717160629451
+            },{
+                longitude: 106.46107739685061,
+                latitude: 29.542921478838274
+            }],
+            color:"#d3c19d",
+            width: 2,
+        }],
+        markers:[{
+            iconPath: "../assets/iconfont/slagcar.png",
+            id: 1,
+            latitude: 29.542921478838274,
+            longitude: 106.45107739685061,
+            width: 40,
+            height: 40,
+            callout: {
+                fontSize: "16",
+                borderRadius: "10",
+                bgColor: "#ffffff",
+                padding: "10",
+            }
+        }]
+    };
+
+    methods = { 
+
+    };
+    onReady(){
+        console.log("轨迹回放");
+        
+        this.map = wx.createMapContext('map');
+        this.lat = 29.542921478838274;
+        this.lng = 106.45107739685061;
+        for(var i=0;i<this.polyline[0].points.length;i++){
+            this.map.translateMarker({
+                markerId: 1,
+                duration: 2000,
+                destination: {
+                    latitude:this.polyline[0].points[i].latitude,
+                    longitude:this.polyline[0].points[i].longitude
+                }
+            })
+            this.lng = this.polyline[0].points[i].longitude;
+            this.lat = this.polyline[0].points[i].latitude;
+        }
+    }
+    onLoad(){  
+
+    }
+}
+</script>

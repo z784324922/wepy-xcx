@@ -1,0 +1,216 @@
+<style lang="less">
+  .daily{
+    height: 100%;
+    background: #efeff4;
+    .screening {
+        width: 100%;
+        overflow: hidden;
+        background: #fff;
+        position: fixed;
+        z-index: 4;
+        top: 0;
+        .title-ul{
+            list-style-type: none;
+            overflow: hidden;
+            background: white;
+            border-bottom: solid 1px #d3d3d3;
+            .display_show{
+                display: block;
+            }
+            .display_none{
+                display: none;
+            }
+            .title-li{
+            float: left;
+            width: 49.8%;
+            font-size: 32rpx;
+            text-align: center;
+            line-height: 100rpx;
+            }
+        }
+    }
+    .mui-content{
+        padding-top: 100rpx;
+    }
+    .mui-card{
+        font-size: 32rpx;
+        position: relative;
+        overflow: hidden;
+        margin: 20rpx;
+        border-radius: 6rpx;
+        background-color: #fff;
+        background-clip: padding-box;
+        box-shadow: 0 3rpx 6rpx rgba(0,0,0,.3);
+        .mui-card-footer,.mui-card-header{
+            position: relative;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            min-height: 44rpx;
+            padding: 25rpx 45rpx;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        .mui-card-content {
+            font-size: 30rpx;
+            position: relative;
+            border-top: 1rpx solid #e3e3e5;
+            border-bottom: 1rpx solid #e3e3e5;
+            .mui-card-content-inner{
+                position: relative;
+                padding: 30rpx;
+                .lspan {
+                    font-size: 26rpx;
+                    width: 52%;
+                    float: left;
+                }
+                .rspan {
+                    font-size: 26rpx;
+                    width: 46%;
+                    float: left;
+                }
+            }
+        }
+        .mui-card-header{
+            justify-content: center
+        }
+        .mui-card-footer{
+            view{
+                text{
+                    color: #007aff;
+                    font-size: 28rpx;
+                }
+            }
+        }
+    }
+  }
+</style>
+<template>
+  <view class="daily">
+    <screening></screening>
+    <view class="mui-content">
+      <!-- 挖机 -->
+      <view class="mui-card">
+        <view class="mui-card-header">
+          <image src="../assets/images/wj.jpg" style="width: 50rpx; max-width: 200px; height: 40rpx" />
+          挖机工作量（已审核通过）
+        </view>
+        <view class="mui-card-content">
+          <view class="mui-card-content-inner" style="overflow: auto">
+            <view class="alidiv">
+              <text class="lspan">本月累计挖掘：<text class="tsbz">{{daily.countBackhoeWorkNumber.count}}</text>车
+              </text>
+              <text class="rspan" decode="true">总 工 时：<text class="tsbz">{{daily.countBackhoeWorkNumber.h}}</text>小时<text class="tsbz">{{daily.countBackhoeWorkNumber.m}}</text>分
+              </text>
+              <text class="lspan">其中挖掘工时：<text class="tsbz">{{daily.countBackhoeWorkNumber1.h}}</text>小时<text class="tsbz">{{daily.countBackhoeWorkNumber1.m}}</text>分
+              </text>
+              <text class="rspan">辅助工时：<text  class="tsbz">{{daily.countBackhoeWorkNumber2.h}}</text>小时<text class="tsbz">{{daily.countBackhoeWorkNumber2.m}}</text>分
+              </text>
+            </view>
+          </view>
+        </view>
+        <view class="mui-card-footer">
+          <view style="text-align: center;width:100%">
+            <navigator url="mbackhoeeffciency"><text id="wja">（查看挖机效率列表）</text></navigator>
+          </view>
+        </view>
+      </view>
+      <!-- 渣车 -->
+      <view class="mui-card">
+        <view class="mui-card-header">
+          <image src="../assets/images/zc.jpg" style="width: 60rpx; max-width: 200px; height: 60rpx" />
+          渣车工作量（已审核通过）
+        </view>
+        <view class="mui-card-content">
+          <view class="mui-card-content-inner" style="overflow: auto">
+            <view class="alidiv" style="width:100%;text-align:center">
+              <text>本月累计运输：<text class="tsbz">{{daily.countSlagCarWorkNumber}}</text> 车
+              </text>
+            </view>
+          </view>
+        </view>
+        <view class="mui-card-footer">
+          <view style="text-align: center;width:100%">
+            <navigator url="mslagcareffciency"><text id="wja">（查看渣车效率列表）</text></navigator>
+          </view>
+        </view>
+      </view>
+      <!-- 加油 -->
+      <view class="mui-card">
+        <view class="mui-card-header">
+          油量使用情况
+        </view>
+        <view class="mui-card-content">
+          <view class="mui-card-content-inner" style="overflow: auto">
+            <view class="alidiv" style="width:100%;text-align:center">
+              <text>本月来油<text class="tsbz">{{daily.oilSumFrom.sum?daily.oilSumFrom.sum:0}}</text>升 加油<text class="tsbz">{{daily.oilSumTo.sum?daily.oilSumTo.sum:0}}</text>升
+              </text>
+            </view>
+          </view>
+        </view>
+        <view class="mui-card-footer">
+          <view style="text-align: center;width:100%">
+            <navigator url="mrefueling"><text id="wja">（查看油料详情）</text></navigator>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Screening from '../common/screening'
+import utils from '../utils/utils'
+
+export default class Month extends wepy.page {
+  config = {
+    navigationBarBackgroundColor: '#000000',
+    navigationBarTextStyle: 'white',
+    navigationBarTitleText: '数据月报',
+    backgroundColor: '#eeeeee',
+    backgroundTextStyle: 'light'
+  }
+  components = {
+    screening: Screening,
+  }
+
+  data = { 
+      daily:{}
+  }
+  
+  getMonth(itemid,date) {
+    var params={
+      openid:this.$parent.globalData.openid,
+      itemid:itemid,
+      date:date
+    }
+    wepy.request({
+      url:'http://www.tulaoban.net/wechat/index/getDaily',
+      data:{
+        ...params
+      }
+    })
+    .then((res)=>{
+      return res.data;
+    })
+    .then(json=>{
+      if (json.code==0) {
+        this.daily = json.data;
+        this.$apply()     
+      }
+    })
+  }
+
+  events = {
+    'change': (itemid,date) => {
+      this.getMonth(itemid,date)
+    }
+  };
+}
+</script>

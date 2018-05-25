@@ -1,0 +1,99 @@
+<style lang="less">
+.login {
+    .logo{
+        margin-left: 20%;
+        margin-right: 20%;
+        margin-top:150rpx; 
+        margin-bottom: 60rpx;
+    }
+    input{
+        height: 90rpx;
+        border-bottom: 2rpx solid #c9c9cf;
+        margin: 0 130rpx ;
+        font-size: 35rpx;
+        padding: 0 20rpx;
+    }
+    .loginbtn {
+        height: 80rpx;
+        line-height: 80rpx;
+        text-align: center;
+        box-sizing: border-box;
+        margin: 60rpx 130rpx;
+        background: #1c8aff;
+        color: white;
+    }
+}
+</style>
+
+<template>
+    <view class="login">
+        <view class="logo">
+            <image src="../assets/images/logo.png" style="width: 100%;" mode="widthFix"/>
+        </view>
+        <input @input="phoneInput"  maxlength="11" type="number" value="{{phone}}" placeholder="请输入手机号" placeholder-style="font-size:35rpx;color:#999" />
+        <input @input="passwordInput" password type="text" value="{{password}}" placeholder="请输入密码" placeholder-style="font-size:35rpx;color:#999"/>
+        <view class="loginbtn" @tap="login">登录</view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import {toLogin} from "../actions"
+
+export default class Login extends wepy.page {
+    config = {
+        navigationBarTitleText: '登录',
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light'
+    };
+
+    data = {
+        userInfo:{},
+        loginMsg:{},
+        phone: "",
+        password:"",
+        loginRes:null
+    };
+    methods = {
+        phoneInput(e){
+            this.phone = e.detail.value;
+        },
+        passwordInput(e){
+            this.password = e.detail.value;
+        },
+        async login(){
+            this.userInfo = await this.$parent.getUserInfo();
+            this.loginMsg = await this.$parent.getLoginMsg();
+            this.$apply();
+            console.log(this.userInfo);
+            console.log(this.loginMsg);
+            var data = {
+                username:this.phone,
+                password:this.password,
+                iv:this.userInfo.iv,
+                encryptedData:this.userInfo.encryptedData,
+                js_code:this.loginMsg.code
+            }
+            this.loginRes = await toLogin(data);
+            if(this.loginRes.code==0){
+                wepy.setStorage({
+                    key:"unionId",
+                    data:this.loginRes.data.unionId
+                })
+                wepy.redirectTo({
+                    url: 'home'
+                }) 
+            }else{
+                wepy.showToast({
+                    title: '登录失败',
+                    icon: 'none',
+                    duration: 2000
+                })
+            }
+            console.log(this.loginRes);
+        }
+    };
+}
+</script>

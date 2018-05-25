@@ -1,0 +1,89 @@
+<style lang="less">
+page {
+  background: #efeff4;
+  overflow:hidden;
+}
+.refuelingDetails{
+    height: 100%;
+    .refuelingPic{
+        height: 50%;
+        swiper{
+            height: 100%;
+            width: 100%;
+            image{
+                height: 100%;
+                width: 100%;  
+            }
+        }
+    }
+    .box-bottom{
+        padding-top: 24%;
+        height: 35%;
+        background: white;
+        view{
+            height: 20%;
+            box-sizing: border-box;
+            padding: 20rpx;
+            font-size: 32rpx;
+            text{
+                float: right;
+            }
+        }
+    }
+}
+</style>
+<template>
+    <view class="refuelingDetails">
+        <view class="refuelingPic">
+            <swiper indicator-dots="{{indicatorDots}}" 
+                circular ="{{circular}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+                <block wx:for="{{imgUrls}}" wx:key="{{idx}}">
+                    <swiper-item>
+                    <image src="{{item}}" class="slide-image"/>
+                    </swiper-item>
+                </block>
+            </swiper>
+        </view>
+        <view class="box-bottom">
+            <view>加油机<text class="tlbz">JYJ01</text></view>
+            <view>加油设备类型<text class="tlbz">挖机</text></view>
+            <view>加油设备编号<text class="tlbz">04</text></view>
+            <view>加油量<text class="tlbz">266升</text></view>
+            <view>加油时间<text class="tlbz">18-03-19 12:39</text></view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class RefuelingDetails extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#000000',
+        navigationBarTextStyle: 'white',
+        navigationBarTitleText: '加油详情',
+        backgroundColor: '#eeeeee',
+        backgroundTextStyle: 'light',
+        disableScroll: true,
+    };
+
+    data = {
+        imgUrls: [
+        'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+        'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+        'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
+        ],
+        indicatorDots: true,
+        autoplay: false,
+        interval: 5000,
+        duration: 800,
+        circular: true
+    };
+
+    methods = { };
+
+    onLoad(options) {
+        var id = options.id;
+        console.log(id);
+    }
+}
+</script>
